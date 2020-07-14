@@ -1,0 +1,74 @@
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+
+示例 1:
+
+输入: "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+示例 2:
+
+输入: "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+示例 3:
+
+输入: "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+//动态规划，连续的字符串
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int[] dp = new int[s.length()];
+        if(s.length()==0)
+            return 0;
+        dp[0] = 1;
+        char[] c = s.toCharArray();
+        int res = 1;
+
+        
+        for(int i=1; i<c.length; i++){
+            int index=i-1;
+            int low = i-1 - dp[i-1] + 1;
+            while(index >=low){
+                if(c[index] != c[i]){
+                    index--;
+                }else{
+                    break;
+                }
+            }
+            dp[i] = i-index;
+            res= Math.max(res, dp[i]);
+        }
+        return res;
+    }
+}
+
+//滑动窗口
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+
+        char[] c = s.toCharArray();
+        //如果以右为基准，那么不好确定左边重复字母的位置。
+        //以左边为基准，则右边遇到重复便停止。
+        int r = 0;
+        int max = 0;
+        //当r处与set中某数重复，则不断增大左边，知道set中r处数在set不重复
+        for(int l= 0; l<c.length; l++){
+            if(l!=0)
+                set.remove(c[l-1]);
+            while(r<c.length && !set.contains(c[r])){
+                set.add(c[r]);
+                r++;
+            }
+            max = Math.max(max, r-l);
+        }
+        return max;
+    }
+}
