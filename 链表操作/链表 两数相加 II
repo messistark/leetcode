@@ -1,0 +1,108 @@
+给你两个 非空 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
+
+你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+
+ 
+
+进阶：
+
+如果输入链表不能修改该如何处理？换句话说，你不能对列表中的节点进行翻转。
+
+ 
+
+示例：
+
+输入：(7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 8 -> 0 -> 7
+
+//反转链表的方式
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        ListNode lr1 = reserve(l1);
+        ListNode lr2 = reserve(l2);
+        int c = 0;
+        ListNode temp = null;
+        ListNode newHead = new ListNode();
+        while(lr1!=null || lr2 !=null){
+            int r1 = lr1!=null? lr1.val : 0;
+            int r2 = lr2!=null? lr2.val : 0;
+            ListNode node = new ListNode();
+            node.val = (c + r1 + r2) % 10;
+            c =  (c + r1 + r2)/10;
+            
+            temp = newHead.next;
+            newHead.next = node;
+            node.next = temp;
+
+            lr1 = lr1!=null? lr1.next: null;
+            lr2 = lr2!=null? lr2.next: null;
+        }
+        if(c>0){
+            temp = newHead.next;
+            ListNode node = new ListNode();
+            node.val = c;
+            newHead.next = node;
+            node.next = temp;
+    }
+    
+
+     return newHead.next;
+        
+}
+
+    public ListNode reserve(ListNode head){
+        ListNode prev = null;
+        ListNode cur = head;
+        while(cur!=null){
+            ListNode temp = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = temp; 
+        }
+        return prev;
+
+    }
+}
+
+
+
+
+//使用栈可以不用反转链表
+    //  Stack<Integer> stack1 = new Stack<>();
+    //  Stack<Integer> stack2 = new Stack<>();
+    //  while(l1!=null || l2!=null){
+    //      if(l1!=null){
+    //           stack1.push(l1.val);
+    //           l1= l1.next;
+    //      }
+            
+    //     if(l2!=null){
+    //         stack2.push(l2.val); 
+    //         l2 = l2.next;
+    //     }
+             
+    //  }
+    // ListNode temp = null;
+    // ListNode newHead = new ListNode();
+    // int c= 0;
+    //  System.out.print(stack1.isEmpty());
+    //  while(!stack1.isEmpty() || !stack2.isEmpty()){
+    //      int r1 = stack1.isEmpty()? 0: stack1.pop();
+    //      int r2 = stack2.isEmpty()? 0: stack2.pop();
+    //      ListNode node = new ListNode((r1 + r2 + c)%10);
+    //      c= (r1 + r2 + c)/10;
+
+    //      temp = newHead.next;
+    //      newHead.next = node;
+    //      node.next = temp;
+
+    //  }
+    //  if(c>0){
+    //         temp = newHead.next;
+    //         ListNode node = new ListNode();
+    //         node.val = c;
+    //         newHead.next = node;
+    //         node.next = temp;
+    // }
+    // return newHead.next;
