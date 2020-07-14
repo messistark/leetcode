@@ -24,6 +24,7 @@
 
 
 //也可以按照节点顺序依次涂色
+//或者先判断再为自己涂色，而不是为下一个节点判断
 class Solution {
     int[][] map = null;
     int[] color = null;
