@@ -23,6 +23,7 @@
 输出：false
 
 
+//也可以按照节点顺序依次涂色
 class Solution {
     int[][] map = null;
     int[] color = null;
