@@ -1,0 +1,38 @@
+class Solution {
+    public int[] sortArray(int[] nums) {
+        Quik(nums, 0, nums.length-1);
+        return nums;
+
+    }
+    public void swap(int[] nums, int i , int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    public void Quik(int[] nums, int start, int end){
+        if(start >= end)
+            return;
+        int p = partition(nums, start, end);
+        Quik(nums, start, p-1);
+        Quik(nums, p+1, end);
+    }
+    public int partition(int[] nums, int start , int end){
+        
+        int left = start;
+        int right = end;
+        while(left!=right){
+            while(nums[left] <= nums[right] && left!=right){
+                right--;
+            }
+            if(left!=right)
+                swap(nums, left, right);
+            while(nums[left] <= nums[right] && left!=right){
+                left++;
+            }
+            if(left!=right)
+                swap(nums, left, right);
+        }
+        return left;
+        
+    }
+}
