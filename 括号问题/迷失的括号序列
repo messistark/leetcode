@@ -1,0 +1,69 @@
+迷失的括号序列
+时间限制 :1sec / 空间限制: 256MB
+
+题意：
+牛妹有括号序列brackets，因为过了太久，导致里面有些括号看不清了，所以用代替，她想知道这个括号序列能不能恢复成合法的括号序列。具体操作是将改为'('或者')'。brackets只由'?','(',')'构成。
+合法的括号序列的定义：
+1.空字符为合法括号序列
+2.(+合法括号序列+) 为合法括号序列
+3.()+合法括号序列为合法括号序列
+
+输入：
+给定brackets字符串 
+
+输出：
+如果能构造出来则返回恢复后任意合法的括号序列，否则返回Impossible
+
+
+import java.util.*;
+ 
+//贪心算法,因为？不可能为空，所以尽可能让（在左边出现，所以先补齐左边胡（。
+public class Solution {
+    /**
+     *
+     * @param brackets string字符串 brackets
+     * @return string字符串
+     */
+    public String MissingBrackets (String brackets) {
+        
+        char[] c = brackets.toCharArray();
+        int lcnt = 0;
+        
+        //先统计（的个数
+        for(int i = 0; i<c.length; i++){
+            if(c[i] == '(')
+                lcnt++;
+        }
+        //如果（超过一半，则不行
+        if(lcnt > c.length/2)
+            return "Impossible";
+        int l_need = c.length/2 - lcnt;
+        
+        for(int i = 0; i<c.length; i++){
+            //先把（填满（贪心，因为（需要尽量在前面）
+            if(c[i] == '?' && l_need > 0){
+                c[i] = '(';
+                l_need--;
+            }else if(c[i] == '?'){
+                //之后将？填为）
+                c[i] = ')';
+            }
+        }
+        int test = 0;
+        //使用贪心填满，如果不满足，那么肯定不满足
+        for(int i = 0; i<c.length; i++){
+            if(c[i] == '(')
+                test++;
+            else{
+                test--;
+                if(test < 0)
+                    return "Impossible";
+            }
+        }
+        if(test!=0)
+            return "Impossible";
+        return String.valueOf(c);
+         
+         
+    }
+}
