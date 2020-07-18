@@ -1,0 +1,39 @@
+
+
+
+class Solution {
+    List<List<Integer>> result = new LinkedList<>();
+    public List<List<Integer>> permute(int[] nums) {
+        bc(nums, 0);
+        return result;
+    }
+
+    void bc(int[] nums, int index){
+        if(index == nums.length-1){
+            List<Integer> temp = new LinkedList<>();
+            for(Integer i : nums)
+                temp.add(i);
+            result.add(temp);
+            return;
+        }
+        // 最好用set， 不能重复交换
+        List<Integer> l = new ArrayList<>();
+            l.add(nums[index]);
+        for(int i = index; i<nums.length; i++){
+            if(index == i || !l.contains(nums[i])){
+                l.add(nums[i]);
+                swap(nums, index, i);
+                bc(nums, index+1);
+                swap(nums, index, i);
+            }
+        }
+
+
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
