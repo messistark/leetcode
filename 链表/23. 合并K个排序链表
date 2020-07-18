@@ -1,0 +1,60 @@
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+
+示例:
+
+输入:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+输出: 1->1->2->3->4->4->5->6
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/merge-k-sorted-lists
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+ /**
+  顺序合并
+ */
+ /**
+    优先级合并见 设计推特一题
+ **/
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        //指向头部，不断合并到ans指向的列表中
+        ListNode ans = new ListNode(-1);
+
+        for(ListNode list : lists){
+            //当做新链表
+            ListNode ptr1 = ans.next;
+            ListNode ptr2 = list;
+            ListNode cur = ans;
+            while(ptr1!=null && ptr2!=null){
+                if(ptr1.val <= ptr2.val){
+                    cur.next = ptr1;
+                    ptr1 = ptr1.next;
+                }
+                else{
+                    cur.next = ptr2;
+                    ptr2 = ptr2.next;
+                }
+                cur = cur.next;
+            }
+            if(ptr1==null && ptr2!=null)
+                cur.next = ptr2;
+            if(ptr2==null && ptr1!=null)
+                cur.next = ptr1;
+        }
+        return ans.next;
+    }
+}
