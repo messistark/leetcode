@@ -1,0 +1,34 @@
+class Solution {
+   public List<List<Integer>> subsets(int[] nums) {
+        return digui(nums, 0);
+
+    }
+
+    public List<List<Integer>> digui (int[] nums, int start) {
+        //如果是最后一个，则添加 最后一个 以及 空
+        if(start == nums.length - 1 ){
+            List<List<Integer>> result = new ArrayList<>();
+            List<Integer> a = new ArrayList<>();
+            a.add(nums[start]);
+            List<Integer> b = new ArrayList<>();
+            result.add(a);
+            result.add(b);
+            return result;
+        }
+
+        List<List<Integer>> Child = digui(nums, start+1);
+        List<List<Integer>> t =  new ArrayList<>();
+        //遍历后面生成的所有子集
+        //既保留后面生成的子集， 也需要把所有的子集加上当前元素
+        for(List<Integer> temp : Child){
+
+            List<Integer> tempb = new ArrayList<>();
+            tempb.addAll(temp);
+            
+            temp.add(nums[start]);
+            t.add(tempb);
+        }
+        Child.addAll(t);
+        return Child;
+    }
+}
