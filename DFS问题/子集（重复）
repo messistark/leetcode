@@ -1,0 +1,35 @@
+//同层去重
+class Solution {
+    List<List<Integer>> output = new ArrayList();
+    int n, k;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        //一定要排序，因为414这种，会产生41 和 14， 因为下一层与上一层相反但是是一样的（无顺序区别）。
+        Arrays.sort(nums);
+        n = nums.length;
+        //遍历所有子集长度
+        for (k = 0; k < n + 1; ++k) {
+        backtrack(0, new ArrayList<Integer>(), nums);
+        }
+        return output;
+        
+    }
+
+    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
+        // if the combination is done
+        if (curr.size() == k)
+        output.add(new ArrayList(curr));
+        //遍历并以此选择first 到 n 之间的数 加入到当前集合，同层不允许重复去计算
+        Set<Integer> set = new HashSet<>();
+        for (int i = first; i < n; i++) {
+            if(!set.contains(nums[i])){
+                // add i into the current combination
+                curr.add(nums[i]);
+                // use next integers to complete the combination
+                backtrack(i + 1, curr, nums);
+                // backtrack
+                curr.remove(curr.size() - 1);
+            }
+            set.add(nums[i]);
+        }
+  }
+}
