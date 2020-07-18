@@ -1,0 +1,70 @@
+如果字符串中的所有字符都相同，那么这个字符串是单字符重复的字符串。
+
+给你一个字符串 text，你只能交换其中两个字符一次或者什么都不做，然后得到一些单字符重复的子串。返回其中最长的子串的长度。
+
+ 
+
+示例 1：
+
+输入：text = "ababa"
+输出：3
+示例 2：
+
+输入：text = "aaabaaa"
+输出：6
+示例 3：
+
+输入：text = "aaabbaaa"
+输出：4
+示例 4：
+
+输入：text = "aaaaa"
+输出：5
+示例 5：
+
+输入：text = "abcdef"
+输出：1
+
+class Solution {
+     //424中k等于1的情况。与424不同之处，需要判断是否有足够的数进行替换
+    public int maxRepOpt1(String text) {
+
+        char[] c = text.toCharArray();
+        int left = 0;
+        int right = 0;
+        int[] count = new int[26]; //统计每个字母出现次数，用于判断是否有足够的字母进行替换
+        int[] countWin = new int[26];
+        int maxCountWin = 0;
+        char maxCountChar = 'a';  //记录窗口中数量最多的字母，与maxCountWin对应起来，用户判断是否有足够的字母进行替换
+        int res = 0;
+        //统计每个字母出现次数
+        for(int i =0; i<c.length; i++)
+            count[c[i] - 'a']++;
+
+        for(right = 0; right < c.length; right++){
+            //窗口内新加字符做处理，看看窗口内最大值是否改变
+            countWin[c[right] - 'a']++;      
+            if(countWin[c[right] - 'a'] > maxCountWin){
+                maxCountWin = countWin[c[right] - 'a'];
+                maxCountChar = c[right];
+            }
+
+            //此时窗口已经不符合要求，需要平移，找到符合条件的更大的值
+            if(right - left + 1 - maxCountWin > 1){
+                countWin[c[left] - 'a']--;
+                left++;
+            }else{//当前窗口满足最大值，则进行结果判断
+            //如果有足够的字母替换，则当前窗口最大值为窗口大小
+                if(maxCountWin < count[maxCountChar-'a'])
+                    res = Math.max(res, right - left + 1);
+                //如果没有，则为窗口内最多字母的个数（aaabacdf， aaaba中无替换，则为a的个数）
+                else if(maxCountWin == count[maxCountChar-'a'])
+                    res = Math.max(res, maxCountWin);
+            }
+        }
+        return res;
+
+    }
+
+  
+}
