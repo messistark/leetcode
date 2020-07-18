@@ -32,3 +32,41 @@ class Solution {
         return Child;
     }
 }
+
+
+
+
+class Solution {
+  List<List<Integer>> output = new ArrayList();
+  int n, k;
+
+  public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
+    // if the combination is done
+    if (curr.size() == k)
+      output.add(new ArrayList(curr));
+     //遍历并以此选择first 到 n 之间的数 加入到当前集合
+    for (int i = first; i < n; ++i) {
+      // add i into the current combination
+      curr.add(nums[i]);
+      // use next integers to complete the combination
+      backtrack(i + 1, curr, nums);
+      // backtrack
+      curr.remove(curr.size() - 1);
+    }
+  }
+
+  public List<List<Integer>> subsets(int[] nums) {
+    n = nums.length;
+    //遍历所有子集长度
+    for (k = 0; k < n + 1; ++k) {
+      backtrack(0, new ArrayList<Integer>(), nums);
+    }
+    return output;
+  }
+}
+
+作者：LeetCode
+链接：https://leetcode-cn.com/problems/subsets/solution/zi-ji-by-leetcode/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
