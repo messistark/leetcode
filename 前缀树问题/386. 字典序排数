@@ -1,0 +1,41 @@
+给定一个整数 n, 返回从 1 到 n 的字典顺序。
+
+例如，
+
+给定 n =1 3，返回 [1,10,11,12,13,2,3,4,5,6,7,8,9] 。
+
+请尽可能的优化算法的时间复杂度和空间复杂度。 输入的数据 n 小于等于 5,000,000。
+
+通过次数10,093提交次数14,228
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/lexicographical-numbers
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+class Solution {
+    List<Integer> result = new ArrayList<Integer>();
+    public List<Integer> lexicalOrder(int n) {
+        for(int i = 1; i<= 9; i++){
+            if(i > n)
+                break;
+            else
+                dfs(i, n);
+        }
+        return result;
+    }
+
+
+    //根据10叉树进行前序遍历，生成数的字典顺序
+    //根据字典顺序截取小于目标值部分
+    void dfs(int n, int target){
+        result.add(n);
+        for(int i = 0; i< 10; i++){
+            if((n*10 + i)> target)
+                break;
+            else
+                dfs(n*10 + i, target);
+        }
+    }
+
+}
