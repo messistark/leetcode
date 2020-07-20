@@ -1,0 +1,19 @@
+package com.hyxy.spark01
+ 
+import org.apache.spark.{SparkConf, SparkContext}
+ 
+object SingleTable {
+  def main(args: Array[String]): Unit = {
+    val conf = new SparkConf().setAppName("单表关联").setMaster("local")
+    val sc = new SparkContext(conf)
+    val child_parent_rdd = sc.textFile("D://123//SingleTable.txt").filter(x=>{if (x.contains("child")) false else true})
+      .map(x=>{val str=x.replaceAll("\\s+"," ").split(" ");(str(0),str(1))})
+    val parent_child_rdd = child_parent_rdd.map(x => (x._2,x._1))
+    val child_grand_rdd = child_parent_rdd.join(parent_child_rdd);//（父母，（祖父母，孙子））
+    val grandchild_grandparent_rdd = child_grand_rdd.map(x=>(x._2._2,x._2._1)).repartition(1).foreach(println)
+ 
+  }
+}
+————————————————
+版权声明：本文为CSDN博主「橙以」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_42721694/article/details/85001578
