@@ -35,3 +35,13 @@ select a.Score as Score,
 (select count(distinct b.Score) from Scores as b where b.Score >= a.Score) as Rank  //选择一个a的score，看看b中比该分数大的有多少
 from Scores as a 
 order by a.Score DESC
+
+
+SELECT a.cid, a.sid, a.score, COUNT(b.score)+1 AS rank
+FROM sc AS a 
+LEFT JOIN sc AS b 
+ON a.score<b.score AND a.cid = b.cid
+GROUP BY a.cid, a.sid,a.score
+ORDER BY a.cid, rank ASC;
+https://blog.csdn.net/out_of_tune/article/details/90236270
+
