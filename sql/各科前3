@@ -1,0 +1,46 @@
+
+//相同的分数重复排
+SELECT a.cid, a.sid, a.score, COUNT(b.score)+1 AS rank
+FROM sc AS a 
+LEFT JOIN sc AS b 
+ON a.score<b.score AND a.cid = b.cid
+GROUP BY a.cid, a.sid,a.score
+ORDER BY a.cid, rank ASC;
+https://blog.csdn.net/out_of_tune/article/details/90236270
+
+
+
+//相同的分数分开排
+--语法形式：　　　　ROW_NUMBER() OVER(PARTITION BY COL1 ORDER BY COL2) 
+--解释：   　　　　根据COL1分组，在分组内部根据 COL2排序，而此函数计算的值就表示每组内部排序后的顺序编号（组内连续的唯一的)
+--常用的使用场景： 取每个学科的前3名
+--1.创建测试表 
+create table #score 
+( 
+name varchar(20), 
+subject varchar(20), 
+score int 
+) 
+
+--2.插入测试数据 
+insert into #score(name,subject,score) values('张三','语文',98) 
+insert into #score(name,subject,score) values('张三','数学',80) 
+insert into #score(name,subject,score) values('张三','英语',90) 
+insert into #score(name,subject,score) values('李四','语文',88) 
+insert into #score(name,subject,score) values('李四','数学',86) 
+insert into #score(name,subject,score) values('李四','英语',88) 
+insert into #score(name,subject,score) values('李明','语文',60) 
+insert into #score(name,subject,score) values('李明','数学',86) 
+insert into #score(name,subject,score) values('李明','英语',88) 
+insert into #score(name,subject,score) values('林风','语文',74) 
+insert into #score(name,subject,score) values('林风','数学',99) 
+insert into #score(name,subject,score) values('林风','英语',59) 
+insert into #score(name,subject,score) values('严明','英语',96) 
+
+--3.取每个学科的前3名数据 
+select * from 
+( 
+select subject,name,score,ROW_NUMBER() over(PARTITION by subject order by score desc) as num from #score 
+) T where T.num <= 3 order by subject 
+
+--4.删除临时表 drop table #score
