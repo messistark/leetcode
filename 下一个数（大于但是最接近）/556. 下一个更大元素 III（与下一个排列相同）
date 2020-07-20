@@ -1,0 +1,57 @@
+
+给定一个32位正整数 n，你需要找到最小的32位整数，其与 n 中存在的位数完全相同，并且其值大于n。如果不存在这样的32位整数，则返回-1。
+
+示例 1:
+
+输入: 12
+输出: 21
+示例 2:
+
+输入: 21
+输出: -1
+
+
+class Solution {
+    public int nextGreaterElement(int n) {
+        char[] a = ("" + n).toCharArray();
+        int i = 0;
+        for(i = a.length-1; i>=1; i--){
+            if(a[i] > a[i-1])
+                break;
+        }
+        if(i == 0)
+            return -1;
+        int target = i-1;
+
+        int temp = target+1;
+        while(temp<a.length && a[temp] > a[target])
+            temp++;
+        swap(a, target, temp-1);
+        reserve(a, i);
+         try {
+            return Integer.parseInt(new String(a));
+        } catch (Exception e) {
+            return -1;
+        }
+
+
+
+    }
+
+    void swap(char[] a, int i, int j){
+        char temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    void reserve(char[] a, int s){
+        int i = s; 
+        int j = a.length-1;
+        while(i<j){
+             swap(a, i, j);
+             i++;
+             j--;
+        }
+           
+    }
+}
