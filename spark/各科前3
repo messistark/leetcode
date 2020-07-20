@@ -17,7 +17,7 @@ object GroupTop3 {
     val groupSort = groups.map(tu =>{
       val key = tu._1
       val value = tu._2
-      val sortValues = value.toList.sortWith(_ > _).take(3) 
+      val sortValues = value.toList.sortWith(_ > _).take(3)   // sortBy(_._3).reverse
       (key,sortValues)
     })
     groupSort.sortBy(tu => tu._1,false,1).foreach(x =>{
