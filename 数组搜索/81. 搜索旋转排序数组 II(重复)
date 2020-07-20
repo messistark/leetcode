@@ -1,0 +1,26 @@
+class Solution {
+    public boolean search(int[] nums, int target) {
+       if(partition(nums, target, 0, nums.length-1) == -1)
+            return false;
+        return true;
+    }
+     public int partition(int[] nums, int target, int s, int e){
+        if(s>e)
+            return -1;
+        int temp = (s + e)/2;
+        if(nums[temp] == target)
+            return temp;
+        if(nums[temp]==nums[e]){
+            return partition(nums, target, s, --e);   //重复时 减去末尾重复元素。（该元素会影响判断，并且不是正确值）
+        }else if(nums[temp]<nums[e])
+            if(target>nums[temp] && target<=nums[e])
+                return partition(nums, target, temp+1, e);
+            else
+                return partition(nums, target, s, temp-1);
+        else
+            if(target<nums[temp] && target>=nums[s])
+                return partition(nums, target, s, temp-1);
+            else
+                return partition(nums, target, temp+1, e);
+    }
+}
