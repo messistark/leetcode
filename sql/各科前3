@@ -1,5 +1,5 @@
 
-//相同的分数重复排
+//相同的分数重复排，要求各组前三，用having 判断排名
 SELECT a.cid, a.sid, a.score, COUNT(b.score)+1 AS rank
 FROM sc AS a 
 LEFT JOIN sc AS b 
