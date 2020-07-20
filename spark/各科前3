@@ -1,0 +1,33 @@
+package cn.spark.study.core
+
+import org.apache.spark.{SparkConf, SparkContext}
+
+object GroupTop3 {
+  def main(args: Array[String]): Unit = {
+    val conf = new SparkConf()
+      .setAppName("GroupTop3")
+      .setMaster("local")
+    val sc = new SparkContext(conf)
+
+    val lines = sc.textFile("C://Users//gaochen//Desktop//score.txt")
+
+    val line = lines.map(line => (line.split(" ")(0),
+      line.split(" ")(1).toInt))
+    val groups = line.groupByKey()
+    val groupSort = groups.map(tu =>{
+      val key = tu._1
+      val value = tu._2
+      val sortValues = value.toList.sortWith(_ > _).take(3) 
+      (key,sortValues)
+    })
+    groupSort.sortBy(tu => tu._1,false,1).foreach(x =>{
+      println(x._1)
+      x._2.foreach((v => println("\t"+ v)))
+      println("================")
+    })
+    sc.stop()
+  }
+}
+————————————————
+版权声明：本文为CSDN博主「菜鸟也有梦想啊」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/huaicainiao/article/details/90243955
