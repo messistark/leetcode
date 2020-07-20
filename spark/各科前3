@@ -31,3 +31,35 @@ object GroupTop3 {
 ————————————————
 版权声明：本文为CSDN博主「菜鸟也有梦想啊」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/huaicainiao/article/details/90243955
+
+
+
+使用RDD中的sortBy方法(适用于数据量较大的情况)
+
+val lines=sc.textFile(path)
+ 
+val subjectAndTeacher=lines.map(func)
+ 
+val subjects=subjectAndTeacher.keys.distinct()  //获取所有科目
+ 
+val maped=subjectAndTeacher.map((_,1))
+ 
+val reduced=maped.reduceByKey(_+_)
+ 
+for(sb <- subjects){   
+ 
+  val filter=reduce.filter(_._1.equals(sb))  //获取该学科的所有老师
+ 
+  //现在调用的是RDD上的sortBy方法，可在内存与磁盘中
+ 
+  //take方法是先在Executor中取好前几个再通过网络发送到Driver,是个      //Action
+ 
+  val r=filter.sortBy(_._2,false).take(topN)   //rdd排序
+ 
+  //然后把r收集或存储起来
+ 
+}
+
+————————————————
+版权声明：本文为CSDN博主「一溪云~」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_34715484/article/details/83153490
