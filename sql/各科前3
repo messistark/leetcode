@@ -44,3 +44,11 @@ select subject,name,score,ROW_NUMBER() over(PARTITION by subject order by score 
 ) T where T.num <= 3 order by subject 
 
 --4.删除临时表 drop table #score
+
+//相同的分数重复排，要求各组前三，用having 判断排名
+SELECT a.cid, a.sid, a.score, COUNT(b.score)+1 AS rank
+FROM sc AS a 
+LEFT JOIN sc AS b 
+ON a.score<b.score AND a.cid = b.cid
+GROUP BY a.cid, a.sid,a.score
+ORDER BY a.cid, rank ASC;
