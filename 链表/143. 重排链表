@@ -1,0 +1,75 @@
+143. 重排链表
+给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+示例 1:
+
+给定链表 1->2->3->4, 重新排列为 1->4->2->3.
+示例 2:
+
+给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null)
+            return;
+        ListNode ptr = fenge(head);
+        
+        ListNode newHead = reserve(ptr);
+        
+        bing(head, newHead);
+        
+    }
+    //可以用快慢指针分割，设置慢指针的pre
+    public ListNode fenge(ListNode head){
+        ListNode man = head;
+        ListNode kuai = head;
+        ListNode pre = null;
+        while(kuai!=null && kuai.next!=null){
+            pre = man;
+            man = man.next;
+            kuai = kuai.next.next;
+        }
+        if(pre!=null)
+            pre.next = null;
+        return man;
+    }
+    
+    public ListNode reserve(ListNode head){
+        ListNode cur = head;
+        ListNode pre = null;
+        while(cur!=null){
+            ListNode temp = cur.next;
+            cur.next= pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
+    }
+    
+    public void bing(ListNode head, ListNode newHead){
+        ListNode first = head;
+        ListNode second = newHead;
+        while(first.next!=null){
+            ListNode temp1 = first.next;
+            ListNode temp2 = second.next;
+            first.next = second;
+            second.next = temp1;
+            first = temp1;
+            second = temp2;
+        }
+        first.next = second;
+    }
+}
