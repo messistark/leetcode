@@ -1,0 +1,46 @@
+24. 两两交换链表中的节点
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+ 
+
+示例:
+
+给定 1->2->3->4, 你应该返回 2->1->4->3.
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+       ListNode newHead = new ListNode();
+       ListNode cur = newHead;
+
+       ListNode ptr = head;
+       while(ptr!=null && ptr.next!=null){
+           //先缓存第三个数
+           ListNode temp = ptr.next.next;
+           //cur的next为第二个节点设置
+           cur.next = ptr.next;
+           //第二个节点的next为第一个节点（反转了）
+           ptr.next.next = ptr;
+           //cur 为第一个节点（下一次插在这个节点后面）
+           cur = ptr;
+           //更新ptr
+           ptr = temp;
+       }
+       if(ptr!=null){
+           cur.next = ptr;
+           cur = cur.next;
+       }
+       cur.next=null;
+       return newHead.next;
+    }
+}
