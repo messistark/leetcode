@@ -1,0 +1,48 @@
+   在无限的整数序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...中找到第 n 个数字。
+
+注意:
+n 是正数且在32位整数范围内 ( n < 231)。
+
+示例 1:
+
+输入:
+3
+
+输出:
+3
+示例 2:
+
+输入:
+11
+
+输出:
+0
+
+说明:
+第11个数字在序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... 里是0，它是10的一部分。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/nth-digit
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。     
+        
+        
+        
+        long size = 1;
+        long c = 1; 
+        long temp = n;
+        //size求出是在哪个阶段（1-9， 10-99， 100-999）
+        //temp求出是在这个阶段中第几位数（13为例，temp为3）
+        while((temp- c*9*size)>0){
+            temp = temp- c*9*size;
+            c= c*10;
+            size++;
+        }
+        temp--;
+        
+        //求出具体是哪个数（13为例，size为2）
+        long number = (long)Math.pow(10, size-1) + temp/size;
+        //在这个数中是哪一位
+        long ind = temp % size;
+
+        String s= String.valueOf(number);
+        return (int)(s.charAt((int)ind) - '0');
